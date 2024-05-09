@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  backend:
+    image: mysql
+    env_file:
+      - ./.env
+    volumes:
+      - /tmp/data/:/var/lib/mysql/data
+    environment:
+      - MYSQL_ROOT_PASSWORD=$MYSQLDB_ROOT_PASSWORD
+      - MYSQL_DATABASE=$MYSQLDB_DATABASE
+    ports:
+      - 3307:3306
+  app:
+    build: .
+    depends_on:
+      - backend
+    links:
+      - backend
+    ports:
+      - 3000:3000
