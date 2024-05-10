@@ -19,7 +19,7 @@ En la consola de tu editor de codigo realiza los siguientes pasos:
     ```
 4. **Accede a la aplicación:**
 
-    Una vez que los contenedores estén en funcionamiento (tienen que mostrarun mensaje en la consola que diga "ready for connection"), abre tu navegador y visita `http://localhost:3000/ping` para ver la aplicación.
+    Una vez que los contenedores estén en funcionamiento (tienen que mostrarun mensaje en la consola que diga "ready for connection"), abre tu navegador y visita `http://localhost:3000/ping` para ver la aplicación. En caso de que intentes levantar la aplicacion en una maquina virtual y verlo en el navegador local visita `http://<IP_DE_LA_MAQUINA_VIRTUAL>:3000/ping`
 
 ## **Detener los contenedores**
 
