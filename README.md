@@ -15,7 +15,7 @@ En la consola de tu editor de codigo realiza los siguientes pasos:
 3. **Inicia los contenedores:**
 
     ```
-    docker-compose up --build
+    docker compose up --build
     ```
 4. **Accede a la aplicación:**
 
