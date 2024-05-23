@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Lautaro Barreras",
   "main": "index.js",
-  "type":"module",
+  "type": "module",
   "scripts": {
     "start": "node src/index.js"
   },
@@ -18,8 +18,10 @@
   },
   "homepage": "https://github.com/etec-integration-project/etec-pi-2024-backend-Lautiibarreras#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.9.7"
   }
 }
