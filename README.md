@@ -21,7 +21,7 @@ En la consola de tu editor de codigo realiza los siguientes pasos:
 
     Una vez que los contenedores estén en funcionamiento (tienen que mostrarun mensaje en la consola que diga "ready for connection"), abre tu navegador y visita `http://localhost:3000/ping` para ver la aplicación. En caso de que intentes levantar la aplicacion en una maquina virtual y verlo en el navegador local visita `http://<IP_DE_LA_MAQUINA_VIRTUAL>:3000/ping`
 
-**Pruebas con `curl`**
+##  **Pruebas con `curl`**
 
 **Registro de Usuario**
 
@@ -31,8 +31,8 @@ Para probar la ruta de registro, utiliza el siguiente comando `curl`:
 curl -X POST http://localhost:3000/auth/registrar \
      -H "Content-Type: application/json" \
      -d '{
-           "nombre_usuario": "usuario_prueba",
-           "contrasena": "contrasena_prueba"
+           "username": "usuario_prueba",
+           "password": "contrasena_prueba"
          }'
 ```
 
@@ -44,9 +44,16 @@ Para probar la ruta de inicio de sesion, utiliza el siguiente comando `curl`:
 curl -X POST http://localhost:3000/auth/iniciar-sesion \
      -H "Content-Type: application/json" \
      -d '{
-           "nombre_usuario": "usuario_prueba",
-           "contrasena": "contrasena_prueba"
+           "username": "usuario_prueba",
+           "password": "contrasena_prueba"
          }'
+```
+**Lista de Usuarios**
+
+Para probar la ruta que te traiga la lista de usuarios existentes en la DB, utiliza el siguiente comando `curl`:
+
+```
+curl -X GET http://localhost:3000/auth/usuarios
 ```
 
 ## **Detener los contenedores**
