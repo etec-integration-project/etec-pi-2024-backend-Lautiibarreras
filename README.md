@@ -80,4 +80,4 @@ curl -X GET http://localhost:3000/appointments/usuario/1
 
 ## **Detener los contenedores**
 -
-Para detener los contenedores en ejecución, simplemente presiona `Ctrl + C` en la terminal donde ejecutaste `docker-compose up`. Esto detendrá los contenedores y liberará los puertos utilizados.
+Para detener los contenedores en ejecución, simplemente presiona `Ctrl + C` en la terminal donde ejecutaste `docker compose up`. Esto detendrá los contenedores y liberará los puertos utilizados.
