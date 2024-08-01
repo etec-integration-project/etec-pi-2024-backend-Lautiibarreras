@@ -8,11 +8,11 @@ config();
 
 const app = express();
 
-app.use(cors({
-    origin: 'http://localhost:3001', // Permitir solicitudes desde el frontend
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+// app.use(cors({
+//     origin: 'http://localhost:3001', // Permitir solicitudes desde el frontend
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Authorization']
+// }));
 
 export const pool = createPool({
     host: process.env.MYSQLDB_HOST,
