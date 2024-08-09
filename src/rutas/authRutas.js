@@ -1,10 +1,11 @@
-import express from 'express';
+// src/rutas/authRutas.js
+import { Router } from 'express';
 import { registrar, iniciarSesion, listarUsuarios } from '../controladores/authControlador.js';
 
-const router = express.Router();
+const router = Router();
 
 router.post('/registrar', registrar);
-router.post('/iniciar-sesion', iniciarSesion);
-router.get('/usuarios', listarUsuarios);  
+router.post('/iniciarSesion', iniciarSesion);
+router.get('/usuarios', listarUsuarios);
 
 export default router;

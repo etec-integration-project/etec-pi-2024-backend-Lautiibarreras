@@ -1,18 +1,11 @@
 import express from 'express';
 import { createPool } from 'mysql2/promise';
 import { config } from 'dotenv';
-import authRutas from './rutas/authRutas.js';
-import appointmentRutas from './rutas/appointmentRutas.js';
 
 config();
 
 const app = express();
-
-// app.use(cors({
-//     origin: 'http://localhost:3001', // Permitir solicitudes desde el frontend
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     allowedHeaders: ['Content-Type', 'Authorization']
-// }));
+app.use(cors({ origin: 'http://localhost:3001' }));  // Permitir solicitudes desde http://localhost:3001
 
 export const pool = createPool({
     host: process.env.MYSQLDB_HOST,
@@ -50,19 +43,32 @@ const initializeDatabase = async () => {
     }
 };
 
-app.get('/', (req, res) => {
-    res.send('Hola');
-});
+const initializeServer = async () => {
+    try {
+        await initializeDatabase();
 
-app.get('/ping', async (req, res) => {
-    const resultado = await pool.query('SELECT NOW()');
-    res.json(resultado[0]);
-});
+        // Importa y usa las rutas solo después de que la base de datos esté inicializada
+        const authRutas = (await import('./rutas/authRutas.js')).default;
+        const appointmentRutas = (await import('./rutas/appointmentRutas.js')).default;
 
-app.use('/auth', authRutas);
-app.use('/appointments', appointmentRutas);
+        app.get('/', (req, res) => {
+            res.send('Hola');
+        });
 
-app.listen(3000, async () => {
-    await initializeDatabase();
-    console.log(`Servidor corriendo en el puerto 3000`);
-});
+        app.get('/ping', async (req, res) => {
+            const resultado = await pool.query('SELECT NOW()');
+            res.json(resultado[0]);
+        });
+
+        app.use('/auth', authRutas);
+        app.use('/appointments', appointmentRutas);
+
+        app.listen(3000, () => {
+            console.log(`Servidor corriendo en el puerto 3000`);
+        });
+    } catch (error) {
+        console.error('Error al inicializar el servidor:', error);
+    }
+};
+
+initializeServer();

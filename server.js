@@ -1,24 +1,26 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const cors = require('cors'); // Importar el middleware cors
+import express from 'express';
+import bodyParser from 'body-parser';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import appointmentRoutes from './src/rutas/appointmentRutas.js';
+import authRoutes from './src/rutas/authRutas.js';
+
+dotenv.config();
+
 const app = express();
-const port = 3000;
+const port = process.env.PORT;
 
-// Middleware
 app.use(bodyParser.json());
-app.use(cors({
-  origin: 'http://localhost:3001' // Permitir solicitudes desde el frontend en localhost:3001
-}));
+app.use(cors({ origin: process.env.FRONTEND_URL}));
 
-// Endpoint para recibir datos
-app.post('/data', (req, res) => {
-  const { data } = req.body;
-  console.log('Datos recibidos:', data);
-  // Aquí puedes agregar la lógica para guardar los datos en la base de datos
-  res.status(200).send('Datos recibidos correctamente');
+app.use('/api/appointments', appointmentRoutes);
+app.use('/api/auth', authRoutes);
+
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send({ error: 'Algo salió mal, intente nuevamente más tarde.' });
 });
 
-// Iniciar el servidor
 app.listen(port, () => {
-  console.log(`Servidor corriendo en http://localhost:${port}`);
+    console.log(`Servidor corriendo en http://localhost:${port}`);
 });
