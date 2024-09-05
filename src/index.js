@@ -1,11 +1,12 @@
 import express from 'express';
+import cors from 'cors';
 import { createPool } from 'mysql2/promise';
 import { config } from 'dotenv';
 
 config();
 
 const app = express();
-app.use(cors({ origin: 'http://localhost:3001' }));  // Permitir solicitudes desde http://localhost:3001
+app.use(cors());  // Permitir solicitudes desde http://localhost:3001
 
 export const pool = createPool({
     host: process.env.MYSQLDB_HOST,
@@ -44,6 +45,8 @@ const initializeDatabase = async () => {
 };
 
 const initializeServer = async () => {
+
+    var port = process.env.PORT || 5000;
     try {
         await initializeDatabase();
 
@@ -55,16 +58,16 @@ const initializeServer = async () => {
             res.send('Hola');
         });
 
-        app.get('/ping', async (req, res) => {
+        app.get('/api/ping', async (req, res) => {
             const resultado = await pool.query('SELECT NOW()');
             res.json(resultado[0]);
         });
 
-        app.use('/auth', authRutas);
-        app.use('/appointments', appointmentRutas);
+        app.use('/api/auth', authRutas);
+        app.use('/api/appointments', appointmentRutas);
 
-        app.listen(3000, () => {
-            console.log(`Servidor corriendo en el puerto 3000`);
+        app.listen(port, () => {
+            console.log(`Servidor corriendo en puerto ${port}`);
         });
     } catch (error) {
         console.error('Error al inicializar el servidor:', error);
