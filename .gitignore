@@ -129,3 +129,9 @@ dist
 .pnp.*
 
 database.sqlite
+
+# Ignorar archivos temporales de MySQL
+mysql-db/mysql.sock
+mysql-db/auto.cnf
+mysql-db/ib_buffer_pool
+mysql-db/mayba/db.opt
