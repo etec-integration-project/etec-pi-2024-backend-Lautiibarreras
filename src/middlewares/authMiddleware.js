@@ -16,6 +16,6 @@ export const verificarToken = (req, res, next) => {
 
         // Si el token es válido, se añade el id del usuario al request para usarlo en las rutas protegidas
         req.userId = decoded.id;
-        next(); // Pasar al siguiente middleware o ruta
+        next(); 
     });
 };
