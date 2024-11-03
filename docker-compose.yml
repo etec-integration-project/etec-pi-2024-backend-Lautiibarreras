@@ -7,7 +7,7 @@ services:
         soft: 1048576
         hard: 1048576
     ports:
-      - 3306:3306
+      - 3307:3306
     restart: always
     volumes:
       - ./mysql-db:/var/lib/mysql
@@ -21,12 +21,12 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-      start_period: 30s
+      start_period: 60s
 
   backend:
     build:
       context: https://github.com/etec-integration-project/etec-pi-2024-backend-Lautiibarreras.git
-      # context: /lungoh8Oopeiwahl/workspaces/proyecto_integrador/barreras/etec-pi-2024-backend-Lautiibarreras
+      #context: "C:/Users/lauta/OneDrive/Desktop/etec-pi-2024-backend-Lautiibarreras"
       dockerfile: Dockerfile
     restart: always
     ports:
@@ -46,7 +46,8 @@ services:
   frontend:
     build:
       context: https://github.com/etec-integration-project/etec-pi-2024-frontend-Lautiibarreras.git
-      # context: /lungoh8Oopeiwahl/workspaces/proyecto_integrador/barreras/etec-pi-2024-frontend-Lautiibarreras
+      #context: "C:/Users/lauta/OneDrive/Desktop/etec-pi-2024-frontend-Lautiibarreras"
+      
       dockerfile: Dockerfile
     restart: always
     ports:
@@ -58,6 +59,7 @@ services:
       - app_network
     environment:
       - PORT=3000
+    
 
 networks:
   app_network:
