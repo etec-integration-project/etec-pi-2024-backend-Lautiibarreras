@@ -4,6 +4,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import appointmentRoutes from './src/rutas/appointmentRutas.js';
 import authRoutes from './src/rutas/authRutas.js';
+import cotizacionRoutes from './src/rutas/cotizacionRutas.js';
+
 
 dotenv.config();
 
@@ -15,6 +17,7 @@ app.use(cors());
 
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api', cotizacionRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
