@@ -17,7 +17,7 @@ app.use(cors());
 
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/auth', authRoutes);
-app.use('/api', cotizacionRoutes);
+app.use('/api/cotizacion', cotizacionRoutes);
 
 app.use((err, req, res, next) => {
     console.error(err.stack);
