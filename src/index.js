@@ -20,6 +20,7 @@ app.use(express.json());
 
 const initializeDatabase = async () => {
     try {
+        // Crear tabla de usuarios
         await pool.query(`
             CREATE TABLE IF NOT EXISTS users (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,6 +30,7 @@ const initializeDatabase = async () => {
         `);
         console.log("Tabla 'users' creada o ya existe.");
 
+        // Crear tabla de citas
         await pool.query(`
             CREATE TABLE IF NOT EXISTS appointments (
                 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -39,14 +41,46 @@ const initializeDatabase = async () => {
             )
         `);
         console.log("Tabla 'appointments' creada o ya existe.");
+
+        // Crear tabla de precios
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS Precios (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                tipo_servicio VARCHAR(50) NOT NULL,
+                precio DECIMAL(10, 2) NOT NULL
+            );
+        `);
+        console.log("Tabla 'Precios' creada o ya existe.");
+
+        // Insertar precios iniciales en la tabla Precios
+        await pool.query(`
+            INSERT IGNORE INTO Precios (tipo_servicio, precio) VALUES
+            ('Desinfección tradicional por metro cuadrado', 25.00),
+            ('Termoniebla por metro cuadrado', 55.00),
+            ('Termoniebla por kilómetro lineal', 102000.00);
+        `);
+        console.log("Valores iniciales insertados en la tabla 'Precios'.");
+
+        // Crear tabla de cotizaciones
+        await pool.query(`
+            CREATE TABLE IF NOT EXISTS Cotizaciones (
+                id INT AUTO_INCREMENT PRIMARY KEY,
+                id_usuario INT NULL,
+                tipo_servicio VARCHAR(50) NOT NULL,
+                cantidad DECIMAL(10, 2) NOT NULL,
+                precio_total DECIMAL(10, 2) NOT NULL,
+                fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            );
+        `);
+        console.log("Tabla 'Cotizaciones' creada o ya existe.");
+
     } catch (error) {
         console.error('Error al inicializar la base de datos:', error);
     }
 };
 
 const initializeServer = async () => {
-
-    var port = process.env.PORT || 5000;
+    const port = process.env.PORT || 5000;
     try {
         await initializeDatabase();
 
