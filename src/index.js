@@ -2,6 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import { createPool } from 'mysql2/promise';
 import { config } from 'dotenv';
+import cotizacionRutas from './rutas/cotizacionRutas.js';
+import precioRutas from './rutas/precioRutas.js';
+import { actualizarPrecios } from './controladores/precioControlador.js'; // Importar actualizarPrecios
 
 config();
 
@@ -52,14 +55,9 @@ const initializeDatabase = async () => {
         `);
         console.log("Tabla 'Precios' creada o ya existe.");
 
-        // Insertar precios iniciales en la tabla Precios
-        await pool.query(`
-            INSERT IGNORE INTO Precios (tipo_servicio, precio) VALUES
-            ('Desinfección tradicional por metro cuadrado', 25.00),
-            ('Termoniebla por metro cuadrado', 55.00),
-            ('Termoniebla por kilómetro lineal', 102000.00);
-        `);
-        console.log("Valores iniciales insertados en la tabla 'Precios'.");
+        // Llamar a la función actualizarPrecios para insertar o actualizar precios
+        await actualizarPrecios({ body: {} }, { status: () => ({ json: () => {} }) });
+        console.log("Precios iniciales verificados e insertados/actualizados en la tabla 'Precios'.");
 
         // Crear tabla de cotizaciones
         await pool.query(`
@@ -73,7 +71,7 @@ const initializeDatabase = async () => {
             );
         `);
         console.log("Tabla 'Cotizaciones' creada o ya existe.");
-
+        
     } catch (error) {
         console.error('Error al inicializar la base de datos:', error);
     }
@@ -99,6 +97,8 @@ const initializeServer = async () => {
 
         app.use('/api/auth', authRutas);
         app.use('/api/appointments', appointmentRutas);
+        app.use('/api/precios', precioRutas);
+        app.use('/api/cotizaciones', cotizacionRutas);
 
         app.listen(port, () => {
             console.log(`Servidor corriendo en puerto ${port}`);
