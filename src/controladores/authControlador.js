@@ -35,31 +35,41 @@ export const iniciarSesion = async (req, res) => {
     const { username, password } = req.body;
 
     try {
+        console.log(`Intentando iniciar sesión con usuario: ${username}`);
+        
         // Buscar el usuario por nombre de usuario
         const [user] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
 
         if (user.length === 0) {
+            console.log('Usuario no encontrado');
             return res.status(401).send('Usuario no encontrado');
         }
 
         // Verificar si la contraseña es válida
         const passwordIsValid = await bcrypt.compare(password, user[0].password);
+        console.log(`¿Contraseña válida? ${passwordIsValid}`);
 
         if (!passwordIsValid) {
+            console.log('Contraseña incorrecta');
             return res.status(401).send('Contraseña incorrecta');
         }
+
+        // Asegúrate de que JWT_SECRET esté definido
+        console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
         // Generar el token JWT
         const token = jwt.sign({ id: user[0].id }, process.env.JWT_SECRET, {
             expiresIn: 86400, // El token expira en 24 horas
         });
 
+        console.log('Token generado correctamente');
+
         // Configurar la cookie con el token JWT
         res.cookie('token', token, {
-            httpOnly: true,   // La cookie no es accesible desde el frontend (JavaScript)
-            secure: process.env.NODE_ENV === 'production',  // Solo usar en HTTPS en producción
-            sameSite: 'Strict', // Evitar ataques CSRF
-            maxAge: 86400000    // La cookie expira en 24 horas (en milisegundos)
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'Strict',
+            maxAge: 86400000
         });
 
         res.status(200).send({ auth: true });
@@ -68,6 +78,7 @@ export const iniciarSesion = async (req, res) => {
         res.status(500).send('Error al iniciar sesión');
     }
 };
+
 
 // Función para listar usuarios
 export const listarUsuarios = async (req, res) => {
