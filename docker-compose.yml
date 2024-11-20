@@ -1,0 +1,66 @@
+services:
+
+  database:
+    image: mysql:5.7
+    ulimits:
+      nofile: # Fix memory leak issue on some systems when LimitCORE=infinity (containerd)
+        soft: 1048576
+        hard: 1048576
+    ports:
+      - 3307:3306
+    restart: always
+    volumes:
+      - ./mysql-db:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mayba
+    networks:
+      - app_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 60s
+
+  backend:
+    build:
+      #context: https://github.com/etec-integration-project/etec-pi-2024-backend-Lautiibarreras.git
+      context: "c:/Users/ETEC/Desktop/etec-pi-2024-backend-Lautiibarreras"
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - app_network
+    environment:
+      - MYSQLDB_HOST=database
+      - MYSQLDB_USER=root
+      - MYSQLDB_ROOT_PASSWORD=root
+      - MYSQLDB_DATABASE=mayba
+      - PORT=5000
+      - JWT_SECRET=MayBaTokenBackend
+
+  frontend:
+    build:
+      #context: https://github.com/etec-integration-project/etec-pi-2024-frontend-Lautiibarreras.git
+      context: "c:/Users/ETEC/Desktop/etec-pi-2024-frontend-Lautiibarreras"
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "3000:3000"
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app_network
+    environment:
+      - PORT=3000
+      - JWT_SECRET=MayBaTokenBackend
+    
+
+networks:
+  app_network:
