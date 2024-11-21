@@ -28,16 +28,14 @@ export const asignarCita = async (req, res) => {
 
 // Obtener citas por usuario
 export const obtenerCitasPorUsuario = async (req, res) => {
-    const { user_id } = req.params;
+    const user_id = req.params.user_id;
 
     try {
-        const [rows] = await pool.query('SELECT * FROM appointments WHERE user_id = ?', [user_id]);
-
-        if (rows.length === 0) {
-            return res.status(404).send('No se encontraron citas para este usuario');
-        }
-
-        res.status(200).json(rows);
+        const [results] = await pool.query(
+            'SELECT * FROM appointments WHERE user_id = ?',
+            [user_id]
+        );
+        res.status(200).json(results);
     } catch (error) {
         console.error('Error al obtener las citas:', error);
         res.status(500).send('Error al obtener las citas');

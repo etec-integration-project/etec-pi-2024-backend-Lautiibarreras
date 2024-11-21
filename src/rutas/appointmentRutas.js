@@ -10,4 +10,5 @@ router.post('/asignar', verificarToken, asignarCita);
 // Proteger la ruta para obtener las citas de un usuario con el middleware verificarToken
 router.get('/usuario/:user_id', verificarToken, obtenerCitasPorUsuario);
 
+
 export default router;

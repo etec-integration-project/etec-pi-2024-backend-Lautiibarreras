@@ -29,8 +29,8 @@ services:
       context: "c:/Users/ETEC/Desktop/etec-pi-2024-backend-Lautiibarreras"
       dockerfile: Dockerfile
     restart: always
-    ports:
-      - "5000:5000"
+    # ports:
+    #   - "5000:5000"
     depends_on:
       database:
         condition: service_healthy
@@ -51,7 +51,7 @@ services:
       dockerfile: Dockerfile
     restart: always
     ports:
-      - "3000:3000"
+      # - "3000:3000"
       - "80:80"
     depends_on:
       - backend
