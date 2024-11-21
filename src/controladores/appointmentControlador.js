@@ -4,7 +4,10 @@ import { pool } from '../index.js';
 
 // Asignar una cita
 export const asignarCita = async (req, res) => {
-    const { user_id, appointment_date, description } = req.body;
+
+    const { appointment_date, description } = req.body;
+
+    const user_id = req.userId
 
     try {
         const [result] = await pool.query(

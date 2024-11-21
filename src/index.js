@@ -4,11 +4,13 @@ import { createPool } from 'mysql2/promise';
 import { config } from 'dotenv';
 import cotizacionRutas from './rutas/cotizacionRutas.js';
 import precioRutas from './rutas/precioRutas.js';
+import cookieParser from 'cookie-parser';
 import { actualizarPrecios } from './controladores/precioControlador.js'; // Importar actualizarPrecios
 
 config();
 
 const app = express();
+app.use(cookieParser())
 app.use(cors());  // Permitir solicitudes desde http://localhost:3001
 
 export const pool = createPool({

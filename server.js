@@ -1,6 +1,7 @@
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import dotenv from 'dotenv';
 import appointmentRoutes from './src/rutas/appointmentRutas.js';
 import authRoutes from './src/rutas/authRutas.js';
@@ -14,6 +15,7 @@ const port = process.env.PORT;
 
 app.use(bodyParser.json());
 app.use(cors());
+app.use(cookieParser())
 
 app.use('/api/appointments', appointmentRoutes);
 app.use('/api/auth', authRoutes);

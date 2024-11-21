@@ -2,7 +2,8 @@ import jwt from 'jsonwebtoken';
 
 // Middleware para verificar el token JWT
 export const verificarToken = (req, res, next) => {
-    const token = req.cookies.token; // Obtener el token de las cookies
+
+    const token = req.cookies['token']; // Obtener el token de las cookies
 
     if (!token) {
         return res.status(403).send('No token provided');
