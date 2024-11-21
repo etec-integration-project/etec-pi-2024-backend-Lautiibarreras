@@ -72,7 +72,7 @@ export const iniciarSesion = async (req, res) => {
             maxAge: 86400000
         });
 
-        res.status(200).send({ auth: true });
+        res.status(200).json({ auth: true, ...user });
     } catch (error) {
         console.error('Error al iniciar sesión:', error);
         res.status(500).send('Error al iniciar sesión');

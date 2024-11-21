@@ -73,6 +73,18 @@ const initializeDatabase = async () => {
             );
         `);
         console.log("Tabla 'Cotizaciones' creada o ya existe.");
+
+        // agregar servicios
+        const precios = [
+            { tipo_servicio: 'Desinfección tradicional por metro cuadrado', precio: 25.00 },
+            { tipo_servicio: 'Termoniebla por metro cuadrado', precio: 55.00 },
+            { tipo_servicio: 'Termoniebla por kilómetro lineal', precio: 102000.00 },
+        ];
+
+        
+        for (let [ts, p] of precios) {
+            await pool.query('INSERT INTO Precios (tipo_servicio, precio) VALUES (?, ?)', [ts, p])
+        }
         
     } catch (error) {
         console.error('Error al inicializar la base de datos:', error);

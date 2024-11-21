@@ -1,8 +1,18 @@
 import jwt from 'jsonwebtoken';
 
+// Middleware para verificar si el usuario es administrador
+export const verificarAdmin = (req, res, next) => {
+    const { username, password } = req.headers;
+
+    if (username === 'admin' && password === 'admin123') {
+        return next(); // Usuario es administrador
+    }
+
+    res.status(403).send('No tienes permisos para realizar esta acción');
+};
+
 // Middleware para verificar el token JWT
 export const verificarToken = (req, res, next) => {
-
     const token = req.cookies['token']; // Obtener el token de las cookies
 
     if (!token) {
